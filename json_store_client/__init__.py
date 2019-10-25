@@ -176,14 +176,14 @@ class Client:
 class AsyncClient:
     def __init__(self, token: str):
         self.version = VERSION
-        self.session = get_event_loop().run_until_complete(self.__create_session())
+        self.session = self.__create_session()
         if not isinstance(token, str):
             raise TypeError("Token must be str, not {}".format(token.__class__.__name__))
         if token.startswith('https://'):
             token = token.split('/')[-1]
         self.__base_url = f'https://www.jsonstore.io/{token}'
 
-    async def __create_session(self):
+    def __create_session(self):
         return aiohttp.ClientSession(headers={
             'Accept': 'application/json',
             'Content-type': 'application/json',
